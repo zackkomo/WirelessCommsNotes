@@ -1,0 +1,146 @@
+Precise GNSS-aided Positioning for Open-World Virtual Reality
+
+Todd E. Humphreys, Member, IEEE
+Ronnie Xian Thong, Kor, 
+Peter A. Iannucci
+
+Aerospace Engineering and Engineering Mechanics, The University of Texas at Austin
+
+[The first paragraph is just like a typical abstract, it summarizes the whole paper.]
+
+This paper presents a novel outdoor Virtual Reality (VR) concept termed
+Open-World Virtual Reality (OWVR) that combines carrier-phase differential
+GNSS (CDGNSS) positioning and a smartphone-grade inertial measurement unit
+(IMU) to provide globally-referenced centimeter-accurate positioning and
+degree-accurate orientation of the VR headset.  The prototype OWVR system is
+differentiated from existing augmented and virtual reality systems, which do
+not provide pose (position and orientation) in a globally-registered VR
+environment. Two sensor fusion configurations---loosely-coupled and a variant
+of tightly-coupled---are explored. The performance of each is presented in
+terms of position and orientation accuracy and integrity. It is concluded that
+low-cost CDGNSS positioning can be made sufficiently robust to support
+globally-referenced outdoor VR applications, unlocking the potential for
+tactile and object-persistent mixed reality in which a virtual skin can be
+draped over the physical world.
+
+[The following paragraphs are written like a typical paper's introduction.  They
+give context, identify the gap in existing literature or practice, and explain how 
+the paper's contributions address the gap.  Citations are used as necessary,
+with cited papers listed at the end.]
+
+Technological advances in the past few decades have spawned fast computer and
+graphic processors, high resolution screens, large communication bandwidths,
+and high-density memory storage. These ingredients enable realistic-looking,
+real-time representation of immersive virtual environments.
+
+Today, VR is an indoor experience: Uncontrolled surroundings, lighting
+conditions, and weather make its outdoor use unreliable, uncomfortable, or
+even dangerous. Nonetheless, the outdoors beckon, as they offer unlimited
+space in which every virtual step is a real step. Whereas simulating
+self-motion in a limited indoor space can result in visually-induced motion
+sickness [1,2,3], outdoor VR can offer a mixed reality experience in which a
+user's self-motion is governed entirely by natural physical movement.
+
+Further immersion is possible if a VR headset's pose can be precisely
+referenced to the local structural environment, and if a high-resolution 3D
+reconstruction of the local environment is available.  In this case, users can
+transform the real world into a personalized landscape in which they explore
+and even touch virtually-represented components of the real world, in effect
+overlaying a virtual “skin” of their choice on the physical world.
+
+Existing VR systems have made modest progress toward such a tactile mixed
+reality. For example, when combined with real-time 3D mapping, current
+inside-out headsets are capable of rendering a chair in one's living room as a
+similar-looking chair in the VR experience, with correct pose relative to the
+VR headset.  But the limitations of real-time visual 3D reconstruction causes
+such real-world objects to be rendered with unappealing coarseness in the
+virtual landscape.  Moreover, inside-out tracking is highly sensitive to
+visual conditions: it cannot be used in low light or in a visually-homogeneous
+space such as the grassy area of a large park.  Nor does the current approach
+support persistence: a virtual object cannot be placed permanently at a given
+location in the physical world.
+
+This paper combines two techniques to unlock the great potential of tactile
+mixed reality with full object persistence: (1) CDGNSS-anchored VR headset
+pose determination, and (2) prior high-resolution globally-referenced 3D
+mapping.  Anchoring VR headset pose to CDGNSS enables continued operation in
+variable outdoor visual conditions and permits virtual objects to be
+persistently located in the real world despite radical changes in the visual
+scene (e.g., snowfall).  Building a globally-referenced 3D map of the local
+real-world environment beforehand, as opposed to building it on-the-fly with
+limited computation, permits a beautifully high-resolution landscape to be
+constructed and enhanced or extended according to users' tastes.
+
+As early as 1997, differential GNSS was explored for augmented reality (AR)
+headset pose estimation [4,5], but registration with the real world was poor
+because the GNSS antenna was not mounted on the headset and only
+pseudorange-differential GNSS was used.  Later work fused position and
+orientation sensors with a visual-based tracker to improve tracking accuracy
+[6].  Shepard et al. incorporated CDGNSS and IMU measurements into visual
+simultaneous localization and mapping for precise and globally-registered AR
+[7], but this system never achieved real-time operation and was limited to a
+hand-held box rather than a headset.  
+
+Compared to AR, in which the real world remains a central and visible backdrop
+to all digital information, VR fully eclipses the external scene, enabling
+much greater experiential control.  The most fully developed prior work in
+outdoor VR is Microsoft’s Dreamwalker, which fuses inside-out tracking with
+filtered low-accuracy GNSS positions and RGB depth frames [8]. But besides
+having only ~5-m accurate headset pose, which spoils virtual object
+persistence, Dreamwalker does not situate the user within a facsimile of the
+local environment, and so does not support the tactile mixed reality
+envisioned in this paper.
+
+The OWVR system introduced in this paper aspires to the full potential of
+outdoor VR with the use of fused CDGNSS and IMU solutions for precise
+real-time user localization.  A highly-detailed globally-referenced 3D map is
+first reconstructed from high-resolution photos of a large outdoor
+space. CDGNSS solutions from dual spatially-separated antennas rigidly mounted
+on a VR headset are then fused with high-rate IMU sensor data in an unscented
+Kalman filter (UKF).  The UKF sends a stream of pose estimates to a virtual
+reality rendering engine, which in turn creates the 3D-reconstructed scenes
+displayed in the headset.
+
+The performance of two sensor fusion configurations is evaluated for
+robustness in the face of multipath, signal blockage, and erratic headset
+movement.  The first is a loosely-coupled configuration in which CDGNSS
+integer ambiguities are resolved without IMU aiding, whereas the second is a
+tightly-coupled variant in which IMU data replace the dynamics model in the
+time update step prior to integer resolution.  The tightly-coupled variant is
+expected to exhibit increased availability of integer-fixed solutions and
+fewer incorrect fixes compared with the loosely-coupled configuration,
+yielding a more satisfyingly smooth open-world VR experience.
+
+
+[1] G. Deangelis and D. Angelaki, Visual–Vestibular Integration for Self-
+Motion Perception, 01 2012.
+
+[2] L. J. Hettinger and G. E. Riccio, “Visually induced motion
+sickness in virtual environments,” Presence: Teleoper. Virtual Environ.,
+vol. 1, no. 3, pp. 306–310, Jan. 1992. [Online]. Available: http:
+//dx.doi.org/10.1162/pres.1992.1.3.306
+
+[3] J. Reason and J. Brand, Motion Sickness. Academic Press, 1975. [Online].
+Available: https://books.google.com/books?id=JMxrAAAAMAAJ
+
+[4] S. Feiner, B. MacIntyre, T. H¨ollerer, and A. Webster, “A touring machine:
+Prototyping 3d mobile augmented reality systems for exploring the
+urban environment,” Personal Technologies, vol. 1, no. 4, pp. 208–217,
+Dec 1997. [Online]. Available: https://doi.org/10.1007/BF01682023
+
+[5] R. Azuma, B. Hoff, H. Neely, and R. Sarfaty, “A motion-stabilized
+outdoor augmented reality system,” 04 1999, pp. 252–259.
+
+[6] J. Karlekar, S. Z. Zhou, Y. Nakayama, W. Lu, Z. C. Loh, and D. Hii,
+“Model-based localization and drift-free user tracking for outdoor augmented
+reality,” in 2010 IEEE International Conference on Multimedia
+and Expo, July 2010, pp. 1178–1183.
+
+[7] D. P. Shepard, “Fusion of carrier-phase differential gps, bundleadjustment-
+based visual slam, and inertial navigation for precisely and
+globally-registered augmented reality,” 2013.
+
+[8] J. J. Yang, C. Holz, E. Ofek, and A. Wilson, “Dreamwalker: Substituting
+real-world walking experiences with a virtual reality,” in User Interface
+Software and Technology (UIST) 2019. ACM, October 2019.
+

@@ -1,0 +1,607 @@
+\documentclass[12pt]{report}
+\usepackage{color,soul}
+\usepackage{subcaption,wrapfig,graphicx,booktabs,fancyhdr,amsmath,amsfonts}
+\usepackage{cite,bm,amssymb,amsthm,url,multirow,times,enumitem,comment}
+\usepackage{mathtools,siunitx,tikz}
+\usepackage[linesnumbered,ruled]{algorithm2e}
+\usepackage[colorlinks=true, linkcolor=black, citecolor=blue, urlcolor=blue]{hyperref}
+\newcommand{\vb}{\boldsymbol}
+\newcommand{\vbh}[1]{\hat{\boldsymbol{#1}}}
+\newcommand{\vbc}[1]{\check{\boldsymbol{#1}}}
+\newcommand{\vbb}[1]{\bar{\boldsymbol{#1}}}
+\newcommand{\vbt}[1]{\tilde{\boldsymbol{#1}}}
+\newcommand{\vbs}[1]{{\boldsymbol{#1}}^*}
+\newcommand{\vbd}[1]{\dot{{\boldsymbol{#1}}}}
+\newcommand{\abs}[1]{\left|{#1}\right|}
+\newcommand{\by}{\times}
+\newcommand{\tr}{\mathsf{T}}
+\newcommand{\sfrac}[2]{\textstyle \frac{#1}{#2}}
+\newcommand{\ba}{\begin{array}}
+\newcommand{\ea}{\end{array}}
+\newcommand{\sinc}{\text{sinc}}
+\renewcommand{\equiv}{\triangleq}
+\newcommand{\cnr}{C/N_0}
+\newcommand{\sgn}{\text{sgn}}
+\renewcommand{\Re}{\mathbb{R}}
+\renewcommand{\Im}{\mathbb{I}}
+\newcommand{\E}[1]{\mathbb{E}\left[ #1 \right]}
+\DeclareMathAlphabet{\mathpzc}{OT1}{pzc}{m}{it}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\DeclareMathOperator*{\argmax}{\arg\!\max}
+
+\topmargin = 0 mm 
+\oddsidemargin = -1 mm 
+\evensidemargin = -1 mm
+\headheight = 0 mm 
+\headsep = 8 mm 
+\textheight = 220 mm 
+\textwidth =170 mm 
+\parindent = 0 mm
+\parskip = 4 mm 
+
+
+\begin{document}
+
+\section*{Reviewer 1}
+\subsection*{General Comments:}
+
+{\textit{This is a very nice, thorough piece of work that develops on the
+    authors' previous contributions to GNSS spoofing detection. The paper
+    expands on the previously introduced ``sandwich'' detector, which utilises
+    both overall power level monitoring and per channel correlation distortion
+    monitoring to classify each received signal as belonging to one of the 4
+    classes: nominal, multipath, jammed, or spoofed.}}
+
+{\textit{The development is clear and the text is well structured and well
+    written and deserves to be published with some largely minor
+    modifications.}}
+  
+{Thank you for your assessment and helpful comments.}
+  
+  
+\subsection*{Suggested Improvements:}
+
+{\textit{One area that could do with some clarification relates to
+      Section IV A -Received Power Level Measurement, in particular Eqn
+      (5). In the precedingdevelopment leading up to this section the
+      authors have considered a singlesignal only, which is both appropriate
+      and simplifies the notation. However,when considering the overall
+      power in the receiver, the chosen notation anddescription becomes
+      somewhat convoluted. I think it would clarify the matterhere to
+      introduce the total power as the sum of the power from all
+      satellites(and all signals within the L1 band from all satellites),
+      the power from allinterference sources (jammers/spoofers etc) and the
+      cross terms (betweensatellites, between interferers and between
+      satellites and interferers). Inthis manner it is not necessary to
+      decide whether an interferer should beclassified as part of the
+      MAI. With this fuller notation, needed only for thepower level
+      measurement, it would be clear where each contribution to theoverall
+      measured power comes from.}}
+
+  
+  { This is a good suggestion.  We have adopted it fully in the revised
+    Section IV.  The new Eq. (6) expresses the combined signal as the
+    summation of all authentic and interference signals, plus noise.  $P_k$ is
+    now defined in terms of this combined signal (cf. Eq. (7)), and the
+    mean of $P_k$ (in linear units) is expressed as a sum of constituents,
+    including cross-terms between authentic and interference signals
+    (cf. Eq. (8)).  No cross-terms between interferers themselves is
+    necessary in Eq. (8), as interferers are assumed to be mutually
+    independent, as now explained in the paragraph just before (8).}
+  
+
+{\textit{In addition, I would argue that Eqn (6) is not strictly
+      correct, as the righthand side represents not the Power Spectral
+      Density due to MAI, but rather thetotal power due to MAI. Indeed the
+      right hand side is the closed form solutionof the so-called spectral
+      separation coefficient for BPSK(1) assuming infinitetransmit and
+      receive bandwidths. Using Eqn (6) as is would greatly overestimate the
+      contribution of MAI to total received power.}}
+
+  
+  {We agree, and are grateful that you caught this error.  The revised
+    expression for $P_k$ (Eqs. (7) and (8)) does not attempt approximation via
+    $M_0$.  The earlier approach was equivalent to the current (correct)
+    approach when $W_P = 3/(2\tau_c)$, but, as $W_P$ is assumed larger than
+    $3/(2\tau_c)$, our former approach exaggerated the contribution of
+    multi-access signals to $P_k$.  We have corrected our code and re-run the
+    paper's simulations and tests against empirical data.}
+  
+
+{\textit{This leads to my final concern with this section: I don't really
+      see how matchedpower spoofing can lead to a total power delta of
+      approximately 2 dB in a 2 MHzbandwidth as shown in Fig. 4. By my
+      calculation this would require an averageC/No of about 50 dB-Hz from
+      approximately 20 satellites simultaneously.I presume the large delta
+      in Fig. 4 is largely due to the RF image energyintroduced by the
+      spoofer. My concern then is that this same spoofer has beenused in the
+      live data experiments also. Is this justifiable? Is it likely thatsuch
+      a large amount of in-band noise would be generated by a "real world"
+      spoofer?}}
+  
+  We have revisited our empirical measurements and our calculations and can
+  re-affirm the $\sim$2 dB uptick in the 2-MHz bandwidth at the beginning of
+  spoofing in TEXBAT Scenario 3.  We were also surprised at the size of the
+  increase.  It can be explained by noting that, for the high-quality antenna
+  (Trimble Geodetic Zephyr II) and receiver (a 16-bit National Instruments
+  front end) in question, the total authentic power in the 2-MHz bandwidth
+  under nominal (clean) conditions was measured to be approximately -142 dBW.
+  This is the combined power of $M_s + 1 = 12$ authentic GPS L1 C/A signals
+  (plus a small amount of power from GPS L1(P)).
+
+  This is a surprisingly large combined power.  Assuming a noise floor of -204
+  dBW/Hz (thermal noise only, no multi-access noise), the total noise power in
+  a 2-MHz bandwidth would be $63 - 204 = -141$ dBW.  Thus, the combined power
+  of the authentic signals (and mild multipath) for this antenna/receiver
+  combination is nearly equal to the total noise power in band.  One can
+  verify this by examining the new Fig. 3, which shows the nominal (clean)
+  spectrum in dark gray.  Selective integration of the spectrum reveals that
+  the power in the center 2 MHz band is indeed twice that of the power in a 2
+  MHz band of the noise floor (which one can approximate by centering a 2 MHz
+  band at -4 MHz).
+
+    The upshot of this is that, \emph{relative to the noise floor alone} (no
+    multi-access interference), of the 12 authentic signals, there are two
+    signals with $C/N_0 \approx 55$ dB-Hz (PRNs 13 and 23), two others with
+    $C/N_0 \approx 53$ dB-Hz (PRNs 3 and 16), and three others above
+    $C/N_0 \approx 50$ dB-Hz, with many of the remaining signals in the mid-
+    to high-40 dB-Hz range.  Note that the \emph{measured} $C/N_0$ values are
+    approximately 3 dB lower than this due to multi-access interference. (In a
+    typical receiver, measured $C/N_0$ is actually $C/(N_0 + M_0)$.)
+
+    Note also that, for TEXBAT Scenario 3, $\eta_i = 1.3$ for all $i$.  Thus,
+    although Scenario 3 is advertised as a ``matched power'' scenario, it is
+    only approximately so.  A truly matched scenario would have $\eta_i = 1$
+    for all $i$.
+
+    The reviewer is correct that some wideband quantization noise and aliasing
+    due to the rudimentary RF front-end enters the 2 MHz band around L1 for
+    TEXBAT Scenario 3.  But the power of such noise is small compared to the
+    power in the spoofing signals of Scenario 3.  The quantization and
+    aliasing noise does tend to make TEXBAT Scenarios 1-6 easier to detect
+    than a more sophisticated spoofing attack would be (because they have
+    slightly higher power).  But TEXBAT Scenario 7 does not suffer from such
+    quantization and aliasing noise, nor do any of the Monte-Carlo-simulated
+    scenarios against which the PD detector was tested.
+
+    In any case, to avoid any confusion, and to avoid distracting the reader
+    with excuses for the rudimentary front end used in TEXBAT Scenarios 1
+    through 6, we have changed Figs. 3 and 4 to reflect the spoofing scenario
+    from TEXBAT Scenario 7, which is free of aliasing or quantization noise.
+    We have also re-drawn the nominal (clean) plots to make them clearer.
+
+    Furthermore, to call attention to the extra noise in TEXBAT Scenarios 2
+    through 6, we have modified the second paragraph of VII.A to read
+
+    \begin{quotation}
+      Note that {\tt tb2}--{\tt tb6} exhibit a modest amount of quantization
+      and aliasing noise that makes them easier to detect than would be
+      expected based on this paper's models, whereas {\tt tb7} is free from
+      such extraneous noise.  {\tt tb7} is also special in that the spoofer
+      exercises control of $\Delta \theta$, permitting nulling, as described
+      in Section V-A, in the early stages of the attack.  In all other TEXBAT
+      recordings, the spoofer controlled $\eta$ and $\Delta \tau$ but left
+      $\Delta \theta$ at an arbitrary constant value ({\tt tb3}, {\tt tb4},
+      and {\tt tb6}) or allowed it to ramp consistent with the pull-off rate
+      ({\tt tb2} and {\tt tb5}).
+    \end{quotation}
+    
+  
+  
+{\textit{Another area that could be made clearer is that the aim of
+      this paper is notso much to detect spoofing per se, but rather to
+      detect a carry-off attack.Thus H2 is the hypothesis that a carry-off
+      attack is underway. This pre?supposesthat the receiver is initially
+      tracking true GPS signals. This is a small pointbut it is important to
+      be clear on this.}}
+
+
+ We agree that this clarification is warranted, and have modified the
+  abstract, the introduction, and the conclusion to make clear that our
+  spoofing detection applies to carry-off-type attacks.
+
+
+
+
+\subsection*{Minor Comments:}
+
+{\textit{Introduction: "... no civil GNSS signals yet incorporate cryptographic modulation..." \\
+      perhaps better to say "... no open civil GNSS signals ..." as the
+      GalileoCommercial Service is indeed a civil GNSS signal incorporating
+      cryptographicmodulation.}}
+
+  
+  {We have incorporated this clarification in our revised manuscript.}
+  
+
+
+{\textit{P. 11: Under H2: Spoofing. Here you do not permit advance of the
+      spoofed signalwith respect to the authentic signal, why?  Also, you
+      state that spoofing wherethe time difference exceeds two chips "is
+      more properly classified as jamming".I would argue that under certain
+      circumstances this could well be classifiedas very successful
+      spoofing.}}
+
+  
+   Thank you for pointing this out.  We unwittingly left off the absolute
+    value bars around $\Delta \tau$ here and in the description of $H_3$.  We
+    have now fixed this, indicating that spoofing can be either advanced or
+    delayed wrt the authentic signal.  We have also modified the text to
+    justify our classification of spoofing as jamming when $|\Delta \tau|$ is
+    sufficiently large:
+
+    \begin{quotation}
+      These bounds make sense because the spoofing signal must be at least as
+      powerful as the authentic signal for reliable spoofing, and because
+      spoofing whose $|\Delta \tau|$ value exceeds $\Delta \tau_1 = 2\tau_c$
+      is no longer classified as carry-off-type spoofing, since the
+      interference is uncorrelated with the authentic signal.  Instead, for
+      $|\Delta \tau| \geq \Delta \tau_1$, the attack is classified as jamming.
+    \end{quotation}
+
+    We have left the assumed distribution of $\Delta \tau$ under $H_2$ as it
+    was, since the worst case attack occurs when the spoofer mimics multipath.
+  
+
+{\textit{Figure 10 ? there's a floating exclamation mark (!) after
+      the figure ? mostlikely a TeX float placement command gone
+      wrong...}}
+
+  
+  {{We have fixed this.  You were correct that it was a placement command
+        gone wrong.}}
+  
+
+
+
+\section*{Reviewer 2}
+\subsection*{Suggestions for Improvement:}
+
+{\textit{The paper is generally well written and organized; however, the
+      notation used is sometimes distracting. The proposed power-distortion
+      detector is very interesting in that it can detect both high-power and
+      low-power spoofing attempts. The authors acknowledge that the monitor is
+      ineffective in cases where the spoofer is able to block or null the
+      authentic GPS signals (which is difficult to accomplish). However, in
+      the results section, while discussing Table 3, it is stated that the
+      proposed detector is most effective during the initial spoofer
+      pull-off. Beyond a certain point, the distortion will subside, and the
+      monitor's effectiveness would decrease.}}
+
+  
+   Agreed.  We have modified the paper's abstract, introduction, and
+    conclusion to emphasize the fact that its spoofer detection is designed to
+    work for carry-off spoofing attacks; in particular, during the initial
+    stages of a carry-off attack when distortion remains significant. 
+  
+
+{\textit{It would be interesting to see how very slow spoofer pull-off
+      would affect the monitor, and what the resulting minimum detectable
+      error would be. It appears unlikely that the proposed monitor can be
+      completely fooled by a slow pull-off rate. However, the experimental
+      results section does not mention details regarding the spoofer's
+      pull-off rate. If it is very slow, is seems possible that the detector
+      would initially classify the spoofing as multipath. Then, beyond a
+      certain minimum detectable error, the detector would correctly identify
+      the spoofing attempt. It is possible that the reason why results in
+      Table 3 show no instances where spoofing is classified as multipath is
+      because of a sufficiently quick pull-off rate.}}
+
+  
+   The reviewer is correct that close-in (small $|\Delta t|$),
+    low-powered spoofing could fool the PD detector into declaring multipath
+    ($H_1$).  However, a slow pull-off would afford the PD detector
+    \emph{more} opportunities to observe distortion and declare the attack as
+    spoofing than a fast pull-off attack.  We believe that the primary reason
+    no empirical spoofing scenarios were mis-classified as multipath is that
+    they were all designed to be \emph{effective} spoofing attacks, with
+    sufficiently large $\eta$ to effect pull-off of the tracking points.
+    Thus, while they were sometimes confused for jamming, their received power
+    was too strong to be confused with multipath.
+
+    The three references to TEXBAT data given in Section VII-A offer details
+    on the pull-off rates of each attack.  In particular, {\tt tb7} has a
+    particularly slow pull-off, whereas {\tt tb2} throuth {\tt tb6} are faster.
+  
+  
+
+
+\subsection*{Minor Comments:}
+
+{\textit{Variable `C' is used to represent the C/A code, and later used
+      to represent the cost function}}
+  
+  {{We have modified $C(t)$ to read $C_r(t)$ throughout to avoid this confusion.}}
+  
+
+{\textit{letter 'j' is used to denote the imaginary unit on pg. 5,
+      as well as a time index (pg. 7), and parameter space index
+      (pg. 22) }}
+
+  
+  {{ Thanks for pointing this out. However, in this context, we do feel that
+      the meaning of our notation is clear. That is, $j$ is often used as an
+      indexing variable, and we have already used $i$ and $k$ elsewhere in the
+      paper. Likewise, either $i$ or $j$ are also traditionally used to
+      indicate imaginary components. Given that there is no overlap within the
+      same expression, we'd prefer to keep the notation as is in this case.}}
+  
+
+{\textit{ Two different notations for conditional probability are used
+      throughout the paper, both the conventional notion, P(A|B), and
+      subscript notion, $P_B(A)$. At times, the subscript notion can become
+      distracting, because it is used to denote conditional as well as
+      marginal distributions (pg. 9 for example). For example, on page 16, the
+      notation used for the conditional density of $D_k$, defined as
+      $p_{Dk}(x | \theta)$, is confusing because it appears that both
+      notations are used simultaneously. Adhering to the conventional notion,
+      $P(A|B)$, for conditional probabilities would improve readability, and
+      eliminate extraneous definitions (on pg. 8 for example). }}
+
+  
+  {{ Thank you for this suggestion.  We agree and have
+        updated our notation in the revision.  $p_\theta(z_k)$ is now written
+        as $p(z_k | \theta)$, and $p_i(z_k)$ as $p(z_k | \Theta \in
+        \Lambda_k)$.  We have retained the notation $w_i(\theta)$ for
+        compactness and because there is no risk of ambiguity. }}
+  
+
+{\textit{When the cost function is introduced on page 8, the
+      definition C[i,$\theta$] is puzzling because it is simply defined
+      as the cost of choosing hypothesis i, given $\theta$ belonging to
+      $\Lambda$ (the entire parameter space). This initially made it
+      seem that the cost is uniform across the entire parameter
+      space. Later in the paper, section 6 helps clarify the definition
+      by showing two different types of cost function. Uniform costs are
+      discussed, as well as non-uniform costs, for various cases of
+      $\theta$ in $\Lambda_i$. Additional explanation of the cost
+      function definition on page 8 would be beneficial. }}
+
+  
+    Thank you for this pointing out this need.  We agree and have added
+    the following language around the introduction of the cost function:
+
+        \begin{quotation}
+          Let $C[i,{\theta}]$ be the cost of choosing $H_i$ when
+          ${\theta} \in \Lambda$ is the actual parameter vector.  Note that
+          this function is sensitive to a particular value of $\theta$, which
+          makes it more general than one that simply assigns a unform cost for
+          choosing $H_i$ when $\theta \in \Lambda_j$.  A later section will
+          introduce various embodiments of $C[i,{\theta}]$.
+        \end{quotation}
+  
+
+
+\section*{Reviewer 3}
+\subsection*{Suggestions for Improvement:}
+
+{\textit{Figure 2 can be improved by using some 3D effect on the
+      correlation functions.}}
+
+  
+   Fig. 2 already includes some features that help the reader view it in
+    3 dimensions.  First, it offers a perspective view of a 3D coordinate
+    frame in $I$, $Q$, and $\tau$.  Second, in the upper-right inset it allows
+    the viewer to appreciate the angular difference between $\xi_{Ak}$ and
+    $\xi_{Ik}$ by offering a view along the $\tau$ axis.
+  
+
+{\textit{Please explain why the signal models in section II did not
+      include a frequency component. With interference or any strong secondary
+      signal, it is possible for the tracking loop to diverge which results in
+      tracking frequency error. If the error is sufficiently small, it may
+      result in a time varying phase.}}
+
+  
+   The models in Section II do not include a carrier frequency component,
+    since they are expressed in a complex baseband representation.  But they
+    do include a Doppler frequency component: $\theta_A$ and $\theta_I$ are
+    time varying, as noted in the original text:
+    \begin{quotation}
+      $P_{\rm A}$, $\tau_{\rm A}$, and $\theta_{\rm A}$ are assumed to vary
+      with time, but their time dependency is suppressed for notational
+      simplicity.
+    \end{quotation}
+    Also, the relative time variation between $\theta_{\rm A}$ and
+    $\hat{\theta}$ -- the variation that could cause tracking stress -- is
+    explicitly noted later on by the notation $\theta_{{\rm A}k}$.
+  
+
+{\textit{p6: Technically, R(tau) is a cross correlation function.}}
+  
+  {{Agreed.  But the technical distiction was already noted in the
+        original manuscript:}}
+    \begin{quotation}
+      The function $R(\tau) = E[C_r(t)C_{\ell}(t - \tau)]$, often called the
+      autocorrelation function of $C_r(t)$ even though, strictly speaking,
+      $C_{\ell}(t)$ may be slightly different from $C_r(t)$, approximates the
+      interaction between $C_r(t)$ and $C_{\ell}(t)$ over the correlation and
+      accumulation operations.
+    \end{quotation}    
+  
+  
+{\textit{section VIII: How is the performance compared against
+      other published methods?}}
+
+  
+   Of the various signal authentication techniques mentioned in the
+    paper's introduction (which offers an up-to-date summary of techniques),
+    this paper's approach can be fairly compared only with a small set of
+    practical near-term GNSS signal authentication techniques that do not
+    require changes to GNSS signals-in-space, are receiver-autonomous,
+    low-cost, require no additional hardware, and can be implemented via a
+    software or firmware update. Existing techniques in this category include
+    monitoring the total received power via the Automatic Gain Control (AGC)
+    setpoint~\cite{akos2012s}, and monitoring autocorrelation profile
+    distortion~\cite{ledvina2010cgr, cavaleri2010dscc, huang2016gnss}.  These
+    tecniques can be viewed as special cases of the current paper's technique.
+    The ``blindspot'' from which these techniques suffer due to their ignoring
+    one or the other of received power or correlation function distortion can
+    be appreciated emph{a priori}: A received power monitor that ignores
+    correlation distortion may not detect a low-power spoofer. Moreover,
+    because a power-monitoring-only technique does not distinguish between
+    spoofing and jamming, its alarm rate can become intolerable in urban areas
+    where so-called personal privacy devices (PPDs, small GNSS
+    jammers)~\cite{mitch2012kyejam} are common.  For their part, the
+    distortion-monitoring approaches in \cite{ledvina2010cgr,
+      cavaleri2010dscc, huang2016gnss} ignore total received power, and thus
+    can be fooled by a spoofer transmitting with a significant power advantage
+    over the authentic signals, which, by action of the AGC, forces the
+    authentic signals under the noise floor, leaving a distortion-free
+    correlation function~\cite{humphreys2011ds}.
+
+    This \emph{a priori} comparison is included in the paper's original
+    manuscript.  It is also clear from the optimal decision regions shown in
+    Fig. 7 that ignoring one or the other of $P_k$ or $D_k$ (as the prior work
+    in this area does), would be sub-optimal.  Therefore, we believe that the
+    paper convincingly establishes that its approach is superior to other
+    approaches in the relevant category for comparison.
+  
+
+  
+  
+{\textit{More details on the test data are expected.}}
+
+  
+  {{Thank you. An additional reference for the TEXBAT data set was
+        included.  Between the three references to the TEXBAT data, and the
+        two references on the ``RNL Multipath and Interference Recordings,''
+        we believe the test data are now adequately detailed.}}
+  
+
+{\textit{I am not sure that the paper includes enough results to
+      show how well the proposed method functions with weak signals. For
+      example, if the target signal is weak, interference from other
+      GNSS signals may also confuse the detector, since it can be
+      observed as multipath or interference. It may trigger more false
+      alarms.}}
+
+  
+  {{The reviewer raises a good point here: it is possible that near-far
+        effects (interaction of weak signals with very strong signals due to
+        imperfect orthogonality of their spreading codes) could cause
+        distortion that would lead to false spoofing alarms.  The reviewer
+        encourages testing to determine if the proposed method works in
+        near-far cases with a large gap between the power of the strongest and
+        weakest signal.  In fact, the clean data set {\tt cd0}, {\tt wd0}, and
+        {\tt wd1} do include a fairly wide range of signal powers.  The most
+        powerful signals show $C/N_0 \approx 52$ dB-Hz, while the weakest
+        signals are at 35 dB-Hz.  This constitutes 17-dB difference in signal
+        power, yet no false spoofing alarms were raised (cf. Table III).  An
+        even wider dynamic range could be tested, but the reviewer is
+        requested to keep in mind that the difficulty of distinguishing
+        multipath from low-power spoofing when severe shadowing is present was
+        already treated in Section III:
+
+        \begin{quotation}
+          On the other hand, the severe shadowing experienced by mobile
+          receivers can cause $\eta > 1$, especially in urban environments
+          where surrounding buildings simultaneously attenuate and reflect
+          authentic signals \cite{steingass2004measuring}.  In these
+          situations, there is no practical upper limit on $\eta$ because the
+          direct-path authentic signal may be attenuated by 50 dB or more. It
+          is not possible to reliably distinguish multipath from low-power
+          spoofing in such circumstances.
+
+          One can avoid this difficulty by applying this paper's detection
+          test only when the authentic signal $r_{\rm A}(t)$ is received
+          without severe shadowing, in which case the probability that
+          $\eta > 1$ under $H_1$ again becomes negligible. In particular, the
+          multipath model developed below assumes that $r_{\rm A}(t)$ is
+          attenuated less than 6 dB by shadowing.  In practice, one simply
+          excludes cases in which the received power $P_k$ is not unusually
+          high yet the measured carrier-to-noise ratio $C/N_0$ drops by more
+          than 6 dB from its modeled value for an unobstructed authentic
+          signal.
+        \end{quotation}
+
+        In other words, our approach avoids the effects of severe shadowing by
+        applying the PD detector only to signals that have been attenuated
+        less than 6 dB by shadowing.  With this exclusion, and with the
+        false-alarm-free performance of the paper's methods on the three $H_0$
+        data sets, in additions to thorough simulation testing in Section VI,
+        we believe that the spoofing false alarm rate under $H_0$ will be
+        negligible.}}
+  
+
+
+{\textit{For the power metric introduced in IV.A, it is not
+      entirely clear how it can be implemented. How precise does
+      the power measurement has to be in order for this method
+      to be applicable? In practice, we use carrier to noise
+      ratio to gauge signal strength. Depending on the
+      implementation choice, it may not be very precise for weak
+      signals, or signals with interference. }}
+
+  
+   Details on how to measure $P_k$ in practice are included in this
+    paragraph from Section IV.A:
+
+    \begin{quotation}
+      Receivers with sufficient dynamic range in the discrete samples produced
+      from $r_{\rm C}(t)$ do not require an AGC and so can compute received
+      power directly by averaging the squared modulus of these samples.  Let
+      $W_{P}$ be the bandwidth over which $P_k$ is to be measured.  If $W_P$
+      is narrower than the receiver front-end's native bandwidth, then
+      $r_{\rm C}(t)$ must be filtered to isolate the desired spectral
+      interval.  Fig. 3 shows 2- and 8-MHz bands for $P_k$,
+      with Fig. 4 showing the corresponding power time
+      histories.  In a receiver whose front end is equipped with an AGC, $P_k$
+      is measured indirectly through the AGC setpoint \cite{akos2012s}.  In
+      this case $W_{P}$ is equivalent to the front-end noise-equivalent
+      bandwith.
+    \end{quotation}
+
+    Details on measuring the power indirectly through the AGC setpoint are
+    found in \cite{akos2012s}, referenced within this paragraph.
+
+      Note that measuring aggregate received power is different from measuring
+      $C/N_0$.  Consider that, if effective $N_0$ rises in a spoofing attack
+      commensurate with carrier power $C$, then $C/N_0$ will remain constant
+      even as $P_k$ rises.
+
+      How accurately does $P_k$ need to be measured to be useful?  We have
+      modified the manuscript in two places to indicate that the paper's
+      detection test assumes $\sigma_P = 0.4$ dB.  This is roughly four times
+      the standard deviation due to natural variation in a high quality
+      receiver in a quiet RF environment (see the top panel in Fig. 4 and the
+      discussion within the text).  Receivers whose measurement of $P_k$ is
+      significantly less precise than this, due to quantization or inaccuracy
+      in the AGC set point-to-$P_k$ mapping, will see their ability to detect
+      low-power spoofing and jamming reduced.
+
+      Note that \cite{akos2012s} showed that the precision of the AGC
+      measurement as a proxy for in-band power is much better than the natural
+      variation in the AGC (see Fig. 7 in \cite{akos2012s}).  This indicates
+      that $P_k$ can be reliably obtained from the AGC measurement (to within
+      a constant offset that can be calibrated in a quiet RF environment).
+  
+
+{\textit{Eq 10 assumes that the code phase can be observed
+      by maximizing correlation function. Ideally this
+      assumption would be nice to have. However, with weak
+      signals or limited bandwidth, it is usually not practical
+      to do that. The early-late code discriminator is likely to
+      be more sensitive than the peak point in some
+      scenarios. What is the sensitivity level of the detector
+      against errors made in this step? }}
+
+  
+   This paper's assumed recipe for determination of $\hat{\tau}$ is given
+    by \[ \hat{\tau} = \arg \max_\tau \xi_k(\tau)  \]  But this recipe is
+    only used for modeling purposes.  As the reviewer notes, in practice the
+    recipe will be some type of early-late code discriminator, possibly with
+    multiple early and late taps.
+
+    The actual receiver used to generate the observables that were processed
+    by the PD detector to yield the results in Section VII, the GRID
+    science-grade software-defined receiver \cite{lightsey2013demonstration},
+    does in fact use an early-minus-late discriminator to obtain $\hat{\tau}$.
+    The fact that the PD detector worked well when using the GRID-produced
+    observables---even in the case of signals as weak as $35$
+    dB-Hz---indicates that the method is not highly sensitive to how
+    $\hat{\tau}$ is obtained.
+  
+\bibliographystyle{IEEEtran} 
+\bibliography{pangea}
+\end{document}

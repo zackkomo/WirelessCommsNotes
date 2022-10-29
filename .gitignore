@@ -1,0 +1,9 @@
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*latexmk
+*.fls
+*converted-to.pdf
+*.bak
