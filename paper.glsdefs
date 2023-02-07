@@ -1,0 +1,28 @@
+\glsdefs@newdocentry{PL}%
+{%
+name={\acronymfont {\glsentryshort {PL}}},%
+sort={PL},%
+type={acronym},%
+first={PL},%
+firstplural={PLs},%
+text={PL},%
+plural={PLs},%
+description={Path loss},%
+descriptionplural={Path loss},%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Path loss},%
+longplural={Path losss},%
+short={PL},%
+shortplural={PLs},%
+counter={page},%
+parent={},%
+%
+}%
+
