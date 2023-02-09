@@ -7,6 +7,8 @@
 \glossaryentry{GRV?\glossentry{GRV}|setentrycounter[]{page}"\glsnumberformat}{1}
 \glossaryentry{SNR?\glossentry{SNR}|setentrycounter[]{page}"\glsnumberformat}{1}
 \glossaryentry{PSD?\glossentry{PSD}|setentrycounter[]{page}"\glsnumberformat}{1}
+\glossaryentry{BER?\glossentry{BER}|setentrycounter[]{page}"\glsnumberformat}{1}
+\glossaryentry{AWGN?\glossentry{AWGN}|setentrycounter[]{page}"\glsnumberformat}{1}
 \glossaryentry{PL?\glossentry{PL}|setentrycounter[]{page}"\glsnumberformat}{2}
 \glossaryentry{PL?\glossentry{PL}|setentrycounter[]{page}"\glsnumberformat}{2}
 \glossaryentry{PL?\glossentry{PL}|setentrycounter[]{page}"\glsnumberformat}{2}
@@ -43,3 +45,7 @@
 \glossaryentry{SNR?\glossentry{SNR}|setentrycounter[]{page}"\glsnumberformat}{7}
 \glossaryentry{SNR?\glossentry{SNR}|setentrycounter[]{page}"\glsnumberformat}{7}
 \glossaryentry{PSD?\glossentry{PSD}|setentrycounter[]{page}"\glsnumberformat}{7}
+\glossaryentry{AWGN?\glossentry{AWGN}|setentrycounter[]{page}"\glsnumberformat}{8}
+\glossaryentry{BER?\glossentry{BER}|setentrycounter[]{page}"\glsnumberformat}{8}
+\glossaryentry{BER?\glossentry{BER}|setentrycounter[]{page}"\glsnumberformat}{9}
+\glossaryentry{BER?\glossentry{BER}|setentrycounter[]{page}"\glsnumberformat}{9}

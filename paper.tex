@@ -16,6 +16,7 @@
  }
  \usepackage[acronym,nomain,nonumberlist]{glossaries}
  \makeglossaries
+ \usepackage{mdframed}
 
  \newcommand{\vb}{\boldsymbol}
 \newcommand{\vbh}[1]{\hat{\boldsymbol{#1}}}
@@ -58,6 +59,11 @@
 \newacronym{GRV}{GRV}{Gaussian random variable}
 \newacronym{SNR}{SNR}{signal-to-noise ratio}
 \newacronym{PSD}{PSD}{power spectral density}
+\newacronym{BER}{BER}{bit error rate}
+\newacronym{AWGN}{AWGN}{additive white Gaussian noise}
+
+
+
 \glsaddall
 
 
@@ -141,30 +147,32 @@ the Exponential Blocking model
 \end{align}
 
 where $\beta$ acts as the mean distance before blocking occurs (i.e. by a building), and the $PL_{LOS}$ and $PL_{NLOS}$ terns are functions for \gls{PL} models.
+\begin{mdframed}
 
-\subsection*{Blocking example}
-Imagine a scenario in which a \gls{LOS} path is in free space and the \gls{NLOS}
-is modeled as an exponential \gls{PL} with an exponent $\alpha = 2.5$ and a
-distance of $d = 100$ between the transmitter and receiver. The blocking
-exponent $\beta = 25$. What does the $SNR = P_r/P_t$ model finalize to if $G =
-  G_t G_r = 1$, $K_{\text{LOS}} = K_{\text{NLOS}} = K_0 = -40$ dB and $d_0 = d_1 =
-  1$.
-\\
-\\
-Answer:
+  \subsection*{Blocking example}
+  Imagine a scenario in which a \gls{LOS} path is in free space and the \gls{NLOS}
+  is modeled as an exponential \gls{PL} with an exponent $\alpha = 2.5$ and a
+  distance of $d = 100$ between the transmitter and receiver. The blocking
+  exponent $\beta = 25$. What does the $SNR = P_r/P_t$ model finalize to if $G =
+    G_t G_r = 1$, $K_{\text{LOS}} = K_{\text{NLOS}} = K_0 = -40$ dB and $d_0 = d_1 =
+    1$.
+  \\
+  \\
+  Answer:
 
-\begin{align}
-  SNR = \frac{P_r}{P_t} = \left\{ \begin{array}{ll}
-                                    K_0 \left[\frac{1}{100}\right]^2     & \text{w.p.} ~~~~~~ e^{-100/25}  \\
-                                    K_0 \left[\frac{1}{100}\right]^{2.5} & \text{w.p.} ~~~ 1 - e^{-100/25} \\
-                                  \end{array}
-  \right. \nonumber
-  = \left\{ \begin{array}{ll}
-              -80 \text{ dB} & \text{w.p.} ~ 0.0183 \\
-              -90 \text{ dB} & \text{w.p.} ~ 0.9817 \\
-            \end{array}
-  \right. \nonumber
-\end{align}
+  \begin{align}
+    SNR = \frac{P_r}{P_t} = \left\{ \begin{array}{ll}
+                                      K_0 \left[\frac{1}{100}\right]^2     & \text{w.p.} ~~~~~~ e^{-100/25}  \\
+                                      K_0 \left[\frac{1}{100}\right]^{2.5} & \text{w.p.} ~~~ 1 - e^{-100/25} \\
+                                    \end{array}
+    \right. \nonumber
+    = \left\{ \begin{array}{ll}
+                -80 \text{ dB} & \text{w.p.} ~ 0.0183 \\
+                -90 \text{ dB} & \text{w.p.} ~ 0.9817 \\
+              \end{array}
+    \right. \nonumber
+  \end{align}
+\end{mdframed}
 
 \section{Shadowing}
 Shadowing is attenuation caused by objects between the transmitter and receiver
@@ -183,36 +191,37 @@ Alternatively, some use a model where $P_r = P_t \Psi$ where $ \psi_{\text{dB}}
   = 10 log_{10}{\Psi}  \sim \mathcal{N}(PL_{\text{dB}}(d),\sigma_{\text{dB}}^2)$
 for some \gls{PL} model.
 
-\subsection*{Shadowing example}
-Imagine a scenario in which we wish to evaluate Wi-Fi coverage for a desired
-range of $100$ m, with a minimum $SNR = 5$ dB and outage constraint at $1\%$ for
-the $5$ GHz frequencies. The \gls{PL} is modeled as exponential with $\alpha =
-  3$, $K = K_0 = -50$ dB (for $F_c \approx 5$ GHz), no TX and RX gain, a noise
-power of $P_n = -100$ dBm and a shadowing standard deviation of
-$\sigma_{\text{dB}} = 6$. What is the mimum transmition power to meet the outage
-constraint?
-\\
-\\
-Answer:
+\begin{mdframed}
+  \subsection*{Shadowing example}
+  Imagine a scenario in which we wish to evaluate Wi-Fi coverage for a desired
+  range of $100$ m, with a minimum $SNR = 5$ dB and outage constraint at $1\%$ for
+  the $5$ GHz frequencies. The \gls{PL} is modeled as exponential with $\alpha =
+    3$, $K = K_0 = -50$ dB (for $F_c \approx 5$ GHz), no TX and RX gain, a noise
+  power of $P_n = -100$ dBm and a shadowing standard deviation of
+  $\sigma_{\text{dB}} = 6$. What is the mimum transmition power to meet the outage
+  constraint?
+  \\
+  \\
+  Answer:
 
-\begin{align}
-  SNR             & = \frac{P_r}{P_t} \geq 5 \text{ dB} \nonumber                                       \\
-  P_r             & \geq -95 \text{ dB} \nonumber                                                       \\
-  P_r             & = P_{t,\text{dB}} + K_{0,\text{dB}} + x_{\text{dB}} - \alpha 10 log_{10}d \nonumber \\
-  P_{t,\text{dB}} & \geq -95 + 50 - x_{\text{dB}} + 60 \nonumber                                        \\
-  P_{t,\text{dB}} & \geq 15 - x_{\text{dB}} \nonumber
-\end{align}
+  \begin{align}
+    SNR             & = \frac{P_r}{P_t} \geq 5 \text{ dB} \nonumber                                       \\
+    P_r             & \geq -95 \text{ dB} \nonumber                                                       \\
+    P_r             & = P_{t,\text{dB}} + K_{0,\text{dB}} + x_{\text{dB}} - \alpha 10 log_{10}d \nonumber \\
+    P_{t,\text{dB}} & \geq -95 + 50 - x_{\text{dB}} + 60 \nonumber                                        \\
+    P_{t,\text{dB}} & \geq 15 - x_{\text{dB}} \nonumber
+  \end{align}
 
-Since $x_{\text{dB}}$ is normally distributed, we simply use the CDF of a
-Gaussian distribution to evaluate transmit power that would allow for the
-required outage constraint of $0.01$:
+  Since $x_{\text{dB}}$ is normally distributed, we simply use the CDF of a
+  Gaussian distribution to evaluate transmit power that would allow for the
+  required outage constraint of $0.01$:
 
-\begin{align}
-  P(P_{t,\text{dB}} \geq  15 - x_{\text{dB}}) = 1 - 0.01 \nonumber \\
-  15 - P_{t,\text{dB}} = \sigma_{\text{dB}}Q^{-1}(0.99) \nonumber  \\
-  P_{t,\text{dB}} \geq 29 \text{ dBm} \nonumber
-\end{align}
-
+  \begin{align}
+    P(P_{t,\text{dB}} \geq  15 - x_{\text{dB}}) = 1 - 0.01 \nonumber \\
+    15 - P_{t,\text{dB}} = \sigma_{\text{dB}}Q^{-1}(0.99) \nonumber  \\
+    P_{t,\text{dB}} \geq 29 \text{ dBm} \nonumber
+  \end{align}
+\end{mdframed}
 \chapter{Multipath Channel Models}
 \label{multipath_ch_model}
 A transmitted signal $s(t)$ propagates through an environment in multiple paths.
@@ -313,26 +322,26 @@ The energy per bit is $E_b = E_s/\log _{2} M$. Also, define the bit-rate as $R =
   \gamma_b = Ebb-N_0 = \frac{E_b}{N_0} = \frac{ E_s/\log _{2} M}{N_0} = \frac{\gamma_s}{\log _{2} M} = \gamma_s \frac{B}{R}
 \end{align}
 
-\section{Probability of Error}
+\section{Probability of Error for fixed SNR}
 TODO
 
-The probability of error $P_s$ is defined in a per-symbol basis. Each constellation has a different $P_s$, seen in the table below based on the Nearest Neighbor bound.
+The probability of error $P_s$ is defined in a per-symbol basis. Each constellation has a different $P_s$, seen in the table below based on the Nearest Neighbor bound in an \gls{AWGN} channel.
 
 \begin{table}[htbp]
   \centering
   \caption{}
-  \begin{tabular}{lcccc}                                                                                \\
-    \cmidrule(r){1-3} & $P_s(\gamma_s)$                                  & $P_b(\gamma_b)$ \\
-    \midrule MPAM     & $2(1-1/M)Q(\sqrt{\frac{3\gamma_s}{M^2-1}})$      &                 \\
-    \midrule MPSQ     & $2Q(\sqrt{2\gamma_s}\sin(\pi/M))$                                  \\
-    \midrule MQAM     & $4(1-1/\sqrt{M})Q(\sqrt{\frac{3\gamma_s}{M-1}})$                   \\
-    \midrule FSK      & $(M-1)Q(\sqrt(\gamma_s/2))$                                        \\
-    \\
-
+  \begin{tabular}{lcccc}                                                                                                                                            \\
+    \cmidrule(r){1-3} & $P_s(\gamma_s)$                                  & $P_b(\gamma_b)$                                                             \\
+    \midrule MPAM     & $2(1-1/M)Q(\sqrt{\frac{6\gamma_s}{M^2-1}})$      & $\frac{2(1-1/M)}{\log_{2}M}Q(\sqrt{\frac{6\gamma_b\log_{2}M}{M^2-1}})$      \\
+    \midrule MPSQ     & $2Q(\sqrt{2\gamma_s}\sin(\pi/M))$                & $\frac{2}{\log_{2}M}Q(\sqrt{2\gamma_b\log_{2}M}\sin(\pi/M))$                \\
+    \midrule MQAM     & $4(1-1/\sqrt{M})Q(\sqrt{\frac{3\gamma_s}{M-1}})$ & $\frac{4(1-1/\sqrt{M})}{\log_{2}M}Q(\sqrt{\frac{3\gamma_b\log_{2}M}{M-1}})$ \\
+    \midrule FSK      & $(M-1)Q(\sqrt{\gamma_s/2})$                      & $\frac{(M-1)}{\log_{2} M}Q(\sqrt{\gamma_b \log_{2} M/2})$                   \\
     \bottomrule
   \end{tabular}
   \label{tab:constellation_pe}
 \end{table}
+
+Where generally $P_b = P_s / \log{2}(M)$ for Gray coded constellations.
 
 Useful approximations for $0 \leq \gamma_s \leq 30$ dB:
 \begin{itemize}
@@ -340,9 +349,62 @@ Useful approximations for $0 \leq \gamma_s \leq 30$ dB:
   \item BPSK has $P_b(\gamma_s) = P_s(\gamma_s) \approxeq 2 e^{-1.5\gamma_s}$
 \end{itemize}
 
+Another way to more easily calculate
+
+\section{Probability of Error for stochastic SNR}
+Since the SNR depends on the received power, which in turn depends on the
+affects of blocking, shadowing, and fading, the SNR is a random variable. It
+becomes useful then to define the average \gls{BER}.
+
+\begin{align}
+  \overline{P_b}  \triangleq \E{P_b} = \int_0^{\infty} P_{b}(\gamma) f_{\gamma}(\gamma) d\gamma
+\end{align}
+\begin{mdframed}
+
+  \subsection*{Average BPSK in Rayleigh Fading}
+  Express the average \gls{BER} of a BPSK signal in a Rayleigh fading channel in terms of the averge SNR $\overline{\gamma}$.
+  \\
+  \\
+  Answer: \\
+  For Rayleigh fading:
+  \begin{align}
+    f_{\gamma_s}(\gamma) = \frac{1}{\overline{\gamma}} e^{-\gamma/\overline{\gamma}}\nonumber
+  \end{align}
+  And for BPSK:
+  \begin{align}
+    P_b(\gamma_s) = 2Q(\sqrt{2\gamma_s}) \nonumber
+  \end{align}
+
+  So the \gls{BER} is:
+  \begin{align}
+    \overline{P_b} & = \int_0^{\infty} 2Q(\sqrt{2\gamma}) \frac{1}{\overline{\gamma}} e^{-\gamma/\overline{\gamma}} d\gamma \nonumber
+  \end{align}
+  with change of variables $x = \gamma/\overline{\gamma}$ such that $d \gamma/\overline{\gamma} = d x $
+
+  \begin{align}
+    \overline{P_b} & = \int_0^{\infty} 2Q(\sqrt{2x\overline{\gamma}}) e^{-x} dx \nonumber                                         \\
+                   & = \frac{2}{2\pi} \int_0^{\infty} e^{-x} \int_{\sqrt{2x\overline{\gamma}}}^{\infty} e^{-t^2/2} dtdx \nonumber
+  \end{align}
+  and switching the order of the integrals
+  \begin{align}
+    \overline{P_b} & = \frac{1}{\pi} \int_0^{\infty} \int_{0}^{t^2/(2\overline{\gamma})} e^{-t^2/2} e^{-x}  dxdt \nonumber \\
+                   & = \frac{1}{\pi} \int_0^{\infty} e^{-t^2/2}(1-e^{t^2/(2\overline{\gamma})}) dt \nonumber               \\
+                   & = \frac{1}{2} - \frac{1}{1\pi} \int_0^{\infty} e^{-t^2(1+1/\overline{\gamma})/2} dt \nonumber         \\
+                   & = \frac{1}{2} \left( 1-\sqrt{\frac{\overline{\gamma}}{1+\overline{\gamma}}}\right) \nonumber          \\
+                   & \approxeq \frac{1}{4\overline{\gamma}} \nonumber
+  \end{align}
+\end{mdframed}
+
+As seen in the example above it can become cumbersome to calculate the average bit error rate. To expedite the process we can use the moment generating functions of the channels and simplify the integral. Most constellation bit error probabilities can be approximated or precisely expressed as $$P_b(\gamma) = a Q( \sqrt{\beta\gamma})$$
+
+Using \cite{Craig258319}, we can express the $Q$-function as
+\begin{align}
+  Q(x) = \frac{1}{\pi}\int_{0}^{\pi/2} e^{-\frac{x^2}{2 \sin^2\phi}}d\phi
+\end{align}
+
 \printglossary[type=\acronymtype,title=Acronyms]
 
-% \bibliographystyle{ieeetran}
-% \bibliography{ref}
+\bibliographystyle{ieeetran}
+\bibliography{ref}
 \end{document}
 
