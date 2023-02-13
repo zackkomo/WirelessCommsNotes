@@ -61,9 +61,10 @@
 \newacronym{PSD}{PSD}{power spectral density}
 \newacronym{BER}{BER}{bit error rate}
 \newacronym{AWGN}{AWGN}{additive white Gaussian noise}
-
-
-
+\newacronym{rv}{r.v.}{random variable}
+\newacronym{CSI}{CSI}{channel side information}
+\newacronym{CDI}{CDI}{channel distribution information}
+\newacronym{WF}{WF}{waterfilling}
 \glsaddall
 
 
@@ -395,13 +396,143 @@ becomes useful then to define the average \gls{BER}.
   \end{align}
 \end{mdframed}
 
-As seen in the example above it can become cumbersome to calculate the average bit error rate. To expedite the process we can use the moment generating functions of the channels and simplify the integral. Most constellation bit error probabilities can be approximated or precisely expressed as $$P_b(\gamma) = a Q( \sqrt{\beta\gamma})$$
+As seen in the example above it can become cumbersome to calculate the average
+bit error rate. To expedite the process we can use the moment generating
+functions of the channels and simplify the integral. Most constellation bit
+error probabilities can be approximated or precisely expressed as $$P_b(\gamma)
+  = a Q( \sqrt{\beta\gamma})$$
 
 Using \cite{Craig258319}, we can express the $Q$-function as
 \begin{align}
   Q(x) = \frac{1}{\pi}\int_{0}^{\pi/2} e^{-\frac{x^2}{2 \sin^2\phi}}d\phi
 \end{align}
+TODO
 
+\chapter{Diversity}
+
+
+\chapter{Channel Capacity}
+
+\section{AWGN Channel Capacity, no fading}
+The capacity of a channel is a measure of the amount of information that can be
+transmitted over the channel, and is denoted with $C$. Another representation is
+with channel efficiency where the capacity is divided by the signal \gls{BW}
+denoted with B.
+
+\begin{align}
+  C   & = B log_{2}(1+\gamma) ~~ bps/ \text{complex channel}           \\
+  C/B & = log_{2}(1+\gamma) ~~ bps/Hz/ \text{complex channel\nonumber}
+\end{align}
+
+\begin{mdframed}
+
+  \subsection*{Shannon Capacity/ \gls{AWGN} Capacity derivation}
+  Derive the Shannon capacity using mutual information.
+  \\
+  \\
+  Answer: If an \gls{AWGN} channel $y = x + w$ where $w \sim \mathcal{N}(0,N_0)$
+  then the capacity is equal to the maximum amount of mutual information
+  $I(x,y)$ of the channel input and output.
+  \begin{align}
+    C/B & = \max_{x} I(x;y) = \max_{x} \left[h(y) - h(y|x) \right] \nonumber \\
+        & = \max_{x} \left[h(x+w) - h(x+w|x) \right] \nonumber               \\
+        & = \max_{x} \left[h(x+w) - h(w) \right] \nonumber
+  \end{align}
+
+  For a \gls{GRV} $w$, the entropy $h(w) = \frac{1}{2} \log_{2} (2 \pi e N_0)$.
+  Also, the distribution which maximizes differential entropy $h$ for random
+  variables of the same variance is Gaussian. This means maximizing $C$ can be
+  boiled down to maximizing $h(x+w)$, which happens when $x+w \sim
+    \mathcal{N}(\mu,\sigma^2)$. This is true only when $x \sim
+    \mathcal{N}(0,P_x)$.
+  \begin{align}
+    \therefore C/B & = \max_{x} I(x;y) = \frac{1}{2} \log_{2}(2\pi e (E_s + N_0)) - \frac{1}{2} \log_{2} (2 \pi e N_0) \nonumber \\
+                   & = \frac{1}{2} \log_{2}(1 + \frac{E_s}{N_0}) = \frac{1}{2} \log_{2}(1 + \gamma)
+  \end{align}
+  For $x$ a complex \gls{GRV} the capacity is doubled.
+\end{mdframed}
+
+\section{Flat Fading Channel Capacity}
+In this regime, the \gls{SNR} of the channel is a \gls{rv} due to fading. Since the noise is always modeled as Gaussian, what we model making the  \gls{SNR} of a channel a  \gls{rv} is the time-varying gain of a channel. The instantaneous received \gls{SNR} at time $i$ is a function of the average transmit power $\overline{P_x}$, the noise \gls{PSD}, signal \gls{BW} and instantaneous gain of the channel at time $i$ $g[i]$.
+
+The capacity of the channel, then, depends on the knowledge of the channel gain, called the \gls{CSI}. There are three choices regarding the \gls{CSI}:
+
+\begin{itemize}
+  \item \gls{CDI}: Both transmitter and receiver known the distribution of $g[i]$
+  \item Receiver \gls{CSI}: Only the receiver knows the value of $g[i]$, but both transmitter and receiver known the distribution of $g[i]$
+  \item Receiver \& transmitter \gls{CSI}:  Both transmitter and receiver known the distribution and the value of $g[i]$
+\end{itemize}
+
+\subsection{Channel Distribution Information}
+CDI is an open problem. It can become difficult to find the capacity-achieving
+distribution for the input. Literature exists on specific cases, such as the
+Rayleigh fading channel, in which the power gain is exponentially distrubuted
+and changes with each channel use at time $i$. An optimal solution exists, but
+the optimal distribution and capacity must be found numerically and lacks a
+closed-form solution.
+TODO
+\subsection{Receiver Channel Side Information}
+In this case the capacity is defined by the Shannon capacity. In practical systems the rate cannot be maintained constant as is expected in Shannon capacity, so a reduction from the Shannon capacity is expected.
+
+Shannon (ergodic) capacity can be computed by integrating over the distribution of the \gls{SNR}, which is known by both the transmitter and receiver.
+
+\begin{align}
+  C & = \E{B\log_{2}(1+\gamma)} =\int_0^{\infty}B \log_{2}(1+\gamma)p(\gamma)d\gamma
+\end{align}
+
+Since the realization of $\gamma$ is known only to the receiver, the ergotic capacity is constant, regardless of $\gamma$. A bound on the capacity can be roughly formed by using Jensen's inequality and switching the expectation and logarithm to achieve
+\begin{align}
+  C & \leq B\log_{2}(1+\E{\gamma}) = B\log_{2}(1+\overline{\gamma})
+\end{align}
+where $\overline{\gamma}$ is the average channel \gls{SNR}. This shows that for receiver \gls{CSI}, the achievable capacity is always less than the Shannon capacity.
+
+\subsection{Receiver \& Transmitter Channel Side Information}
+In this regime, the receiver can feed back information about the channel to the transmitter, and in turn the transmitter can take actions and adapt it's transmission strategy.
+
+There are two main knobs which the transmitter has access to in order to change it's strategy: power and rate. If we allow the transmit power to vary with some function of $\gamma$ subject to some average power constraint $\overline{P}$, we arrive at the power adaptation strategy.
+
+\subsection*{Water filling: Optimal Strategy}
+TODO
+Solving the resulting lagrangian from
+\begin{align}
+  C = \max_{P(\gamma)} \left[ \int_{0}^{\infty}B \log_2 (1 + \frac{P(\gamma)}{\overline{P}}\gamma)p(\gamma) d\gamma\right] \nonumber \\
+  \text{s.t. } \int P(\gamma)p(\gamma)d\gamma = \overline{P}
+\end{align}
+
+results in a \gls{WF} solution where
+\begin{align} \label{PA_policy}
+  \frac{P(\gamma)}{\overline{P}} = \left\{ \begin{array}{ll}
+                                             1/\gamma_0 - 1/\gamma & \gamma \geq \gamma_0 \\
+                                             0                     & \gamma < \gamma_0    \\
+                                           \end{array}
+  \right.
+\end{align}
+
+for the value of $\gamma_0$ that satisfies the power constraint from the lagrangian. The overall capacity in the receiver and transmitter \gls{CSI} is then:
+\begin{align}
+  C = \int_{\gamma_0}^{\infty} B \log_{2} (\frac{\gamma}{\gamma_0})p(\gamma)d\gamma
+\end{align}
+
+Since the power adaptation policy in (\ref{PA_policy}) has a dependence on the threshold, it can only be achieved with a time-varying data rate achieved for the instantaneous \gls{SNR}. For Rayleigh fading, this capacity can exceed the AWGN channel capacity for the same average SNR, different to the \gls{CSI} case where fading always indicated decreased capacity.
+
+For an arbitrary power adaptation policy, the channel capacity is
+\begin{align}
+  C = \int_{\gamma_0}^{\infty} B \log_{2} (1 + \frac{P(\gamma)}{\overline{P}}\gamma)p(\gamma)d\gamma
+\end{align}
+
+\subsection*{Discrete Rate adaptation}
+Since the \gls{WF} is not practically achievable, a discrete Rate adaptation method is described where the transmitter can choose the rate between discrete scemes (i.e. MQAM with varying M).
+TODO
+\subsection*{Power Adaptation at fixed rate}
+The power adaptation scheme employed here is:
+\begin{align} \label{PA_policy_fixedR}
+  \frac{P(\gamma)}{\overline{P}} = \left\{ \begin{array}{ll}
+                                             \gamma_t/\gamma & \gamma \geq \gamma_0 \\
+                                             0               & \gamma < \gamma_0    \\
+                                           \end{array}
+  \right.
+\end{align}
+for some target \gls{SNR} $\gamma_t$.
 \printglossary[type=\acronymtype,title=Acronyms]
 
 \bibliographystyle{ieeetran}

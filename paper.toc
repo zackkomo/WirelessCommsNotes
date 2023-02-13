@@ -12,3 +12,10 @@
 \contentsline {section}{\numberline {4.2}Signal-to-noise ratio}{7}{section.4.2}%
 \contentsline {section}{\numberline {4.3}Probability of Error for fixed SNR}{8}{section.4.3}%
 \contentsline {section}{\numberline {4.4}Probability of Error for stochastic SNR}{8}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Diversity}{10}{chapter.5}%
+\contentsline {chapter}{\numberline {6}Channel Capacity}{11}{chapter.6}%
+\contentsline {section}{\numberline {6.1}AWGN Channel Capacity, no fading}{11}{section.6.1}%
+\contentsline {section}{\numberline {6.2}Flat Fading Channel Capacity}{12}{section.6.2}%
+\contentsline {subsection}{\numberline {6.2.1}Channel Distribution Information}{12}{subsection.6.2.1}%
+\contentsline {subsection}{\numberline {6.2.2}Receiver Channel Side Information}{12}{subsection.6.2.2}%
+\contentsline {subsection}{\numberline {6.2.3}Receiver \& Transmitter Channel Side Information}{12}{subsection.6.2.3}%
